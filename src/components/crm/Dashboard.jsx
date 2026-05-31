@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useApp } from "../../store/AppContext";
 import { TIER_META, STAGE_META, RISK_META } from "../../data/constants";
 import { formatCurrency, formatDate } from "../../lib/utils";
 
 export default function Dashboard() {
+  const [showAllStats, setShowAllStats] = useState(false);
   const { leads, advertisers, followups, currentUser, isAdmin, salesNames } = useApp();
 
   const myLeads = useMemo(() => {
@@ -104,21 +105,32 @@ export default function Dashboard() {
       </h2>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-4 gap-4">
-        {statCards.map((card) => (
-          <div key={card.label} className="bg-white rounded-xl p-4 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)] flex items-center justify-between">
-            <div className={`${card.bg} ${card.text} ${card.border} rounded-full p-2.5 border flex items-center justify-center`}>
-              <span className="text-lg">{card.icon}</span>
+      <div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          {statCards.slice(0, showAllStats ? statCards.length : 4).map((card) => (
+            <div key={card.label} className="bg-white rounded-xl p-4 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)] flex items-center justify-between">
+              <div className={`${card.bg} ${card.text} ${card.border} rounded-full p-2.5 border flex items-center justify-center`}>
+                <span className="text-lg">{card.icon}</span>
+              </div>
+              <div className="text-right">
+                <div className="text-xs text-[#6b7280]">{card.label}</div>
+                <div className={`text-2xl font-bold ${card.text}`}>{card.value}</div>
+              </div>
             </div>
-            <div className="text-right">
-              <div className="text-xs text-[#6b7280]">{card.label}</div>
-              <div className={`text-2xl font-bold ${card.text}`}>{card.value}</div>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        {/* Mobile: show all / collapse toggle */}
+        <div className="md:hidden mt-2 text-center">
+          <button
+            onClick={() => setShowAllStats(!showAllStats)}
+            className="text-xs text-[#1d4ed8] hover:text-[#1e40af] font-medium"
+          >
+            {showAllStats ? "收起统计卡片 ▲" : "查看全部统计 ▼"}
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {/* Stage Distribution */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
           <h3 className="text-sm font-semibold text-[#111827] mb-4">客户阶段分布</h3>

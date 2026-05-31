@@ -5,7 +5,7 @@ import AIDiagnosisTool from "./AIDiagnosisTool";
 import AIMaterialTool from "./AIMaterialTool";
 
 export default function AICenter() {
-  const [subTab, setSubTab] = useState("script");
+  const [subTab, setSubTab] = useState("");
 
   return (
     <div className="animate-fadeUp">
@@ -15,12 +15,12 @@ export default function AICenter() {
       </div>
 
       {/* Sub Tabs */}
-      <div className="flex gap-1 mb-5 bg-white rounded-xl p-1.5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] border border-slate-200">
+      <div className="flex gap-1 mb-5 bg-white rounded-xl p-1.5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] border border-slate-200 overflow-x-auto">
         {AI_SUB_TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setSubTab(t.id)}
-            className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
+            className={`flex-1 px-2 sm:px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
               subTab === t.id
                 ? "bg-[#1d4ed8] text-white shadow-sm"
                 : "text-[#475569] hover:bg-slate-50 hover:text-[#1d4ed8]"
@@ -32,6 +32,18 @@ export default function AICenter() {
         ))}
       </div>
 
+      {!subTab && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {AI_SUB_TABS.map((t) => (
+            <button key={t.id} onClick={() => setSubTab(t.id)}
+              className="bg-white rounded-xl p-6 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)] hover:border-[#1d4ed8] hover:shadow-md transition-all text-left">
+              <div className="text-2xl mb-2">{t.id === "script" ? "💬" : t.id === "diagnosis" ? "🔍" : "🎬"}</div>
+              <div className="text-base font-bold text-[#111827]">{t.label}</div>
+              <div className="text-xs text-[#6b7280] mt-1">{t.desc}</div>
+            </button>
+          ))}
+        </div>
+      )}
       {subTab === "script" && <AIScriptTool />}
       {subTab === "diagnosis" && <AIDiagnosisTool />}
       {subTab === "material" && <AIMaterialTool />}

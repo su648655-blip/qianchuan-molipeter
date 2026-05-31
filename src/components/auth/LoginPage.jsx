@@ -8,11 +8,11 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     if (!username || !password) { setError("请输入用户名和密码"); return; }
-    const ok = login(username, password);
+    const ok = await login(username, password);
     if (!ok) setError("用户名或密码错误");
   };
 

@@ -46,22 +46,20 @@ export default function AdvertiserModal({ ad, onClose }) {
 
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-fadeIn" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] w-full max-w-2xl max-h-[90vh] overflow-hidden animate-slideDown" onClick={e => e.stopPropagation()}>
+      <div className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] w-[95vw] sm:w-full max-w-2xl max-h-[90vh] overflow-hidden animate-slideDown" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
           <h2 className="text-base font-bold text-[#111827]">{isEdit ? "编辑在投客户" : "新增在投客户"}</h2>
           <button onClick={onClose} className="text-[#6b7280] hover:text-[#111827] text-lg">&times;</button>
         </div>
         <form onSubmit={handleSubmit} className="px-6 py-4 overflow-y-auto max-h-[calc(90vh-70px)]">
           {error && <div className="mb-3 p-2 bg-[#fee2e2] text-[#dc2626] rounded-lg text-xs">{error}</div>}
-          {!isEdit && (
-            <div className="mb-4"><label className={labelCls}>关联CRM客户（可选）</label>
+          <div className="mb-4"><label className={labelCls}>关联CRM客户（可选）</label>
               <select className={inputCls} value={form.leadId} onChange={e => handleLinkLead(e.target.value)}>
-                <option value="">手动输入</option>
-                {leads.filter(l => l.stage === "已成交" || l.status === "活跃投放").map(l => <option key={l.id} value={l.id}>{l.name} - {l.assignedTo}</option>)}
+                <option value="">{isEdit ? "不关联" : "手动输入"}</option>
+                {leads.map(l => <option key={l.id} value={l.id}>{l.name} - {l.assignedTo} {l.stage !== "已成交" && l.stage !== "推进合作" ? `[${l.stage}]` : ""}</option>)}
               </select>
             </div>
-          )}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div><label className={labelCls}>客户名称 <span className="text-red-500">*</span></label><input className={inputCls} value={form.name} onChange={e => handleChange("name", e.target.value)} /></div>
             <div><label className={labelCls}>店铺名称</label><input className={inputCls} value={form.shopName} onChange={e => handleChange("shopName", e.target.value)} /></div>
             <div><label className={labelCls}>行业</label><select className={inputCls} value={form.industry} onChange={e => handleChange("industry", e.target.value)}><option value="">请选择</option>{INDUSTRIES.map(i => <option key={i} value={i}>{i}</option>)}</select></div>

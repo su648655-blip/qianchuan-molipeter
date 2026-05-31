@@ -50,6 +50,7 @@ function generateMetrics(seed) {
     const cvr = (1.0 + (seed * 0.2 + i * 0.03) % 2.5).toFixed(2);
     const roi = (1.2 + (seed * 0.15 + i * 0.02) % 2.0).toFixed(2);
     metrics.push({
+      id: generateId(),
       date: new Date(Date.now() - i * 86400000).toISOString().slice(0, 10),
       dailyConsumption: Math.floor(5000 + (seed + i) * 3000 + Math.random() * 10000),
       cpm: Math.round(cpm * 10) / 10,

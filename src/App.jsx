@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AppProvider, useApp } from "./store/AppContext";
 import LoginPage from "./components/auth/LoginPage";
 import Navbar from "./components/layout/Navbar";
+import MobileBottomBar from "./components/layout/MobileBottomBar";
 import Dashboard from "./components/crm/Dashboard";
 import CRMPage from "./components/crm/CRMPage";
 import AdvertiserPage from "./components/crm/AdvertiserPage";
@@ -10,7 +11,13 @@ import UserManagePage from "./components/admin/UserManagePage";
 
 function AppContent() {
   const { currentUser, isAdmin, loading } = useApp();
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState(() => {
+    return localStorage.getItem("qc_activeTab") || "dashboard";
+  });
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    localStorage.setItem("qc_activeTab", tab);
+  };
 
   if (loading) {
     return (
@@ -42,11 +49,13 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f0f2f5]">
-      <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
-      <div className="max-w-[1280px] mx-auto px-6 py-5">
+    <div className="min-h-screen bg-[#f0f2f5] pb-16 md:pb-0">
+      <Navbar activeTab={activeTab} onTabChange={handleTabChange} />
+      <div className="max-w-[1280px] mx-auto px-3 sm:px-6 py-3 sm:py-5">
         {renderTab()}
       </div>
+      {/* Mobile Bottom Tab Bar */}
+      <MobileBottomBar activeTab={activeTab} onTabChange={handleTabChange} isAdmin={isAdmin} />
     </div>
   );
 }

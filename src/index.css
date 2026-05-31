@@ -35,3 +35,17 @@ body {
 .animate-fadeUp { animation: fadeUp .3s ease-out; }
 .animate-fadeIn { animation: fadeIn .2s ease-out; }
 .animate-slideDown { animation: slideDown .2s ease-out; }
+.scrollbar-none { scrollbar-width: none; -ms-overflow-style: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* Mobile safe area for bottom bar */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Mobile card list enhancements */
+@media (max-width: 767px) {
+  .mobile-full-width {
+    width: 100% !important;
+  }
+}

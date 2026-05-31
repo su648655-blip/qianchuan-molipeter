@@ -19,7 +19,7 @@ export default function FollowupModal({ leadId, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-fadeIn" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] w-full max-w-lg animate-slideDown" onClick={e => e.stopPropagation()}>
+      <div className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] w-[95vw] sm:w-full max-w-lg animate-slideDown" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
           <h2 className="text-base font-bold text-[#111827]">新增跟进记录</h2>
           <button onClick={onClose} className="text-[#6b7280] hover:text-[#111827] text-lg">&times;</button>
@@ -35,7 +35,7 @@ export default function FollowupModal({ leadId, onClose, onSave }) {
             </div>
           </div>
           <div><label className="block text-xs font-medium text-[#475569] mb-1">跟进内容 <span className="text-red-500">*</span></label><textarea className={inputCls} rows={4} value={form.content} onChange={e => setForm(p => ({ ...p, content: e.target.value }))} placeholder="记录跟进内容…" /></div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div><label className="block text-xs font-medium text-[#475569] mb-1">跟进时间</label><input type="datetime-local" className={inputCls} value={form.contactAt} onChange={e => setForm(p => ({ ...p, contactAt: e.target.value }))} /></div>
             <div><label className="block text-xs font-medium text-[#475569] mb-1">下次跟进时间</label><input type="datetime-local" className={inputCls} value={form.nextContactAt} onChange={e => setForm(p => ({ ...p, nextContactAt: e.target.value }))} /></div>
           </div>

@@ -214,7 +214,7 @@ export default function AIScriptTool() {
         </button>
       </div>
 
-      <div className="col-span-2 bg-white rounded-xl p-5 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)]" ref={resultRef}>
+      <div className="col-span-2 bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)]" ref={resultRef}>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-[#111827]">生成结果</h3>
           {result && (

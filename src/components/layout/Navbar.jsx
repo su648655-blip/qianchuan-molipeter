@@ -9,20 +9,20 @@ export default function Navbar({ activeTab, onTabChange }) {
 
   return (
     <div className="bg-white border-b border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sticky top-0 z-[200]">
-      <div className="max-w-[1280px] mx-auto px-6 flex items-center h-14">
+      <div className="max-w-[1280px] mx-auto px-3 sm:px-6 flex items-center min-h-14">
         {/* Logo */}
         <div className="flex items-center gap-2.5 mr-8 shrink-0">
           <div className="w-7 h-7 bg-gradient-to-br from-[#1d4ed8] to-[#1e40af] rounded-lg flex items-center justify-center text-sm">
             🎯
           </div>
           <div>
-            <div className="text-sm font-bold text-[#111827] leading-tight">千川销售管理系统</div>
-            <div className="text-[10px] text-[#6b7280]">抖音电商 · 收量业务</div>
+            <div className="hidden sm:block text-sm font-bold text-[#111827] leading-tight">千川销售管理系统</div>
+            <div className="hidden sm:block text-[10px] text-[#6b7280]">抖音电商 · 收量业务</div>
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-0.5">
+        {/* Tabs - hidden on mobile, shown on md+ */}
+        <div className="hidden md:flex gap-0.5 overflow-x-auto scrollbar-none">
           {TABS.filter(t => !t.adminOnly || isAdmin).map((t) => (
             <button
               key={t.id}
@@ -34,9 +34,7 @@ export default function Navbar({ activeTab, onTabChange }) {
               }`}
             >
               <span className="text-sm">{t.icon}</span>
-              <span className={`text-[11px] font-medium whitespace-nowrap ${activeTab === t.id ? "font-semibold" : ""}`}>
-                {t.label}
-              </span>
+              <span className={`hidden sm:inline text-[11px] font-medium whitespace-nowrap ${activeTab === t.id ? "font-semibold" : ""}`}>{t.label}</span>
               {activeTab === t.id && (
                 <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#1d4ed8] rounded-t" />
               )}
@@ -58,7 +56,7 @@ export default function Navbar({ activeTab, onTabChange }) {
                   onKeyDown={e => { if (e.key === "Enter" && keyInput) saveApiKey(keyInput); }}
                   placeholder="输入您的 DeepSeek API Key…"
                   autoFocus
-                  className="w-[220px] px-2.5 py-1 pr-8 text-[11px] border border-slate-300 rounded-md bg-slate-50 h-7 outline-none focus:border-[#1d4ed8]"
+                  className="w-[140px] sm:w-[220px] px-2.5 py-1 pr-8 text-[11px] border border-slate-300 rounded-md bg-slate-50 h-7 outline-none focus:border-[#1d4ed8]"
                 />
                 <button
                   type="button"
@@ -99,7 +97,7 @@ export default function Navbar({ activeTab, onTabChange }) {
             </div>
           )}
 
-          <span className="text-[11px] text-[#6b7280]">当前：</span>
+          <span className="hidden sm:inline text-[11px] text-[#6b7280]">当前：</span>
           <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold border-2 ${
             isAdmin
               ? "bg-[#fef3c7] border-[#fcd34d] text-[#b45309]"
@@ -107,13 +105,13 @@ export default function Navbar({ activeTab, onTabChange }) {
           }`}>
             {(currentUser?.name || "?")[0]}
           </div>
-          <span className="text-xs font-semibold text-[#111827]">{currentUser?.name}</span>
+          <span className="hidden sm:inline text-xs font-semibold text-[#111827]">{currentUser?.name}</span>
 
           {isAdmin && (
             <span className="bg-[#c2410c] text-white px-1.5 py-0.5 rounded text-[10px] font-medium">管理员</span>
           )}
 
-          <button onClick={logout} className="text-[11px] text-[#6b7280] hover:text-[#111827] transition-colors ml-1">退出</button>
+          <button onClick={logout} className="text-[11px] text-[#6b7280] hover:text-[#111827] transition-colors ml-1"><span className="hidden sm:inline">退出</span><span className="sm:hidden">🚪</span></button>
         </div>
       </div>
     </div>

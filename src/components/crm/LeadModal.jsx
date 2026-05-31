@@ -47,14 +47,14 @@ export default function LeadModal({ lead, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-fadeIn" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] w-full max-w-2xl max-h-[90vh] overflow-hidden animate-slideDown" onClick={e => e.stopPropagation()}>
+      <div className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] w-[95vw] sm:w-full max-w-2xl max-h-[90vh] overflow-hidden animate-slideDown" onClick={e => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
           <h2 className="text-base font-bold text-[#111827]">{isEdit ? "编辑客户" : "新增客户"}</h2>
           <button onClick={onClose} className="text-[#6b7280] hover:text-[#111827] text-lg">&times;</button>
         </div>
         <form onSubmit={handleSubmit} className="px-6 py-4 overflow-y-auto max-h-[calc(90vh-70px)]">
           {error && <div className="mb-3 p-2 bg-[#fee2e2] text-[#dc2626] rounded-lg text-xs">{error}</div>}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div><label className={labelCls}>客户名称 <span className="text-red-500">*</span></label><input className={inputCls} value={form.name} onChange={e => handleChange("name", e.target.value)} placeholder="客户公司名称" /></div>
             <div><label className={labelCls}>店铺名称</label><input className={inputCls} value={form.shopName} onChange={e => handleChange("shopName", e.target.value)} placeholder="抖音店铺名称" /></div>
             <div><label className={labelCls}>联系人</label><input className={inputCls} value={form.contact} onChange={e => handleChange("contact", e.target.value)} placeholder="联系人姓名" /></div>

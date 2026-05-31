@@ -31,8 +31,8 @@ export default function LeadDetail({ lead, onClose }) {
   return (
     <>
       <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50 animate-fadeIn" onClick={onClose}>
-        <div className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] w-full max-w-5xl max-h-[90vh] overflow-hidden animate-slideDown" onClick={e => e.stopPropagation()}>
-          <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+        <div className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] w-[95vw] sm:w-full max-w-5xl max-h-[90vh] overflow-hidden animate-slideDown" onClick={e => e.stopPropagation()}>
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 flex items-start sm:items-center justify-between flex-col sm:flex-row gap-2">
             <div className="flex items-center gap-3">
               <h2 className="text-lg font-bold text-[#111827]">{lead.name}</h2>
               <span className="px-2 py-0.5 rounded text-[11px] font-medium" style={{ color: tierMeta.color, background: tierMeta.bg, border: `1px solid ${tierMeta.border}` }}>{tierMeta.label}</span>
@@ -51,8 +51,8 @@ export default function LeadDetail({ lead, onClose }) {
               <button onClick={onClose} className="text-[#6b7280] hover:text-[#111827] text-xl ml-2">&times;</button>
             </div>
           </div>
-          <div className="flex h-[calc(90vh-70px)]">
-            <div className="w-[380px] shrink-0 border-r border-slate-200 p-6 overflow-y-auto">
+          <div className="flex flex-col md:flex-row h-auto md:h-[calc(90vh-70px)] overflow-y-auto">
+            <div className="w-full md:w-[380px] shrink-0 border-b md:border-r md:border-b-0 border-slate-200 p-4 md:p-6 overflow-y-auto max-h-[40vh] md:max-h-none">
               <h3 className="text-sm font-semibold text-[#111827] mb-4">客户基础信息</h3>
               <div className="space-y-3">
                 <InfoRow label="客户名称" value={lead.name} /><InfoRow label="店铺名称" value={lead.shopName} />
@@ -70,7 +70,7 @@ export default function LeadDetail({ lead, onClose }) {
                 {lead.remark && <InfoRow label="备注" value={lead.remark} />}
               </div>
             </div>
-            <div className="flex-1 p-6 overflow-y-auto">
+            <div className="flex-1 p-4 md:p-6 overflow-y-auto">
               <h3 className="text-sm font-semibold text-[#111827] mb-4">跟进时间轴</h3>
               {myFollowups.length === 0 ? (
                 <div className="text-center text-[#6b7280] py-12 text-sm">暂无跟进记录</div>

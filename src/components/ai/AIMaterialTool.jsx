@@ -171,7 +171,7 @@ export default function AIMaterialTool() {
           {loading ? React.createElement("span", { className: "flex items-center gap-2" }, React.createElement("span", { className: "w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" }), "诊断中") : "🔬 开始诊断"}
         </button>
       </div>
-      <div className="col-span-2 bg-white rounded-xl p-5 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)]" ref={resultRef}>
+      <div className="col-span-2 bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)]" ref={resultRef}>
         <h3 className="text-sm font-semibold text-[#111827] mb-4">诊断结果</h3>
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
