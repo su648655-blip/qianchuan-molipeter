@@ -1,5 +1,5 @@
 import { api } from "./client";
-import { fromSnakeFollowup } from "./adapters";
+import { fromSnakeFollowup, toSnakeFollowup } from "./adapters";
 
 export async function fetchFollowups() {
   const res = await api("/api/followups");
@@ -7,5 +7,5 @@ export async function fetchFollowups() {
 }
 
 export async function createFollowup(f) {
-  return api("/api/followups", { method: "POST", body: JSON.stringify(f) });
+  return api("/api/followups", { method: "POST", body: JSON.stringify(toSnakeFollowup(f)) });
 }
