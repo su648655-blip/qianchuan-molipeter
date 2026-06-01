@@ -25,7 +25,7 @@ export default function LeadDetail({ lead, onClose }) {
   const handleDelete = () => { deleteLead(lead.id); onClose(); };
 
   if (showEdit) {
-    return <LeadModal lead={lead} onClose={() => setShowEdit(false)} onSave={(data) => { editLead(lead.id, data); setShowEdit(false); }} />;
+    return <LeadModal lead={lead} onClose={() => setShowEdit(false)} onSave={(data) => { editLead(lead.id, data); setShowEdit(false); onClose(); }} />;
   }
 
   return (

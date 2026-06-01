@@ -8,7 +8,7 @@ export default function AdvertiserModal({ ad, onClose }) {
   const [form, setForm] = useState({
     leadId: "", name: "", shopName: "", industry: "", contact: "", phone: "",
     assignedTo: "", startDate: new Date().toISOString().slice(0, 10),
-    mainProduct: "", unitPrice: "", rebate: "", riskLevel: "低",
+    mainProduct: "", unitPrice: "", rebate: "", riskLevel: "低", status: "活跃投放",
   });
   const [error, setError] = useState("");
 
@@ -19,7 +19,7 @@ export default function AdvertiserModal({ ad, onClose }) {
         industry: ad.industry || "", contact: ad.contact || "", phone: ad.phone || "",
         assignedTo: ad.assignedTo || "", startDate: ad.startDate || "",
         mainProduct: ad.mainProduct || "", unitPrice: ad.unitPrice || "",
-        rebate: ad.rebate || "", riskLevel: ad.riskLevel || "低",
+        rebate: ad.rebate || "", riskLevel: ad.riskLevel || "低", status: ad.status || "活跃投放",
       });
     }
   }, [ad]);
@@ -70,6 +70,7 @@ export default function AdvertiserModal({ ad, onClose }) {
             <div><label className={labelCls}>主投产品</label><input className={inputCls} value={form.mainProduct} onChange={e => handleChange("mainProduct", e.target.value)} /></div>
             <div><label className={labelCls}>客单价 (元)</label><input className={inputCls} type="number" value={form.unitPrice} onChange={e => handleChange("unitPrice", e.target.value)} /></div>
             <div><label className={labelCls}>当前返点 (%)</label><input className={inputCls} type="number" value={form.rebate} onChange={e => handleChange("rebate", e.target.value)} /></div>
+            <div><label className={labelCls}>投放状态</label><select className={inputCls} value={form.status} onChange={e => handleChange("status", e.target.value)}>{["新开发","跟进中","活跃投放","观望评估","暂停投放","已流失"].map(s => <option key={s} value={s}>{s}</option>)}</select></div>
             <div><label className={labelCls}>风险等级</label><select className={inputCls} value={form.riskLevel} onChange={e => handleChange("riskLevel", e.target.value)}>{RISK_LEVELS.map(r => <option key={r} value={r}>{r}</option>)}</select></div>
           </div>
           <div className="mt-6 flex justify-end gap-3">

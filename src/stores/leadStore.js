@@ -28,7 +28,10 @@ const useLeadStore = create((set, get) => ({
   addLead: async (lead) => {
     const newLead = { ...lead, id: generateId(), createdAt: new Date().toISOString() };
     if (IS_SERVER) {
-      try { await leadApi.createLead(newLead); } catch (e) { console.error("addLead API error:", e); }
+      try {
+        const { toSnakeLead } = await import("../api/adapters");
+        await leadApi.createLead(toSnakeLead(newLead));
+      } catch (e) { console.error("addLead API error:", e); }
     }
     set((state) => ({ leads: [newLead, ...state.leads] }));
     return newLead;
@@ -36,7 +39,28 @@ const useLeadStore = create((set, get) => ({
 
   editLead: async (id, data) => {
     if (IS_SERVER) {
-      try { await leadApi.updateLead(id, data); } catch (e) { console.error("editLead API error:", e); }
+      try {
+        const adapted = {};
+        if (data.name !== undefined) adapted.name = data.name;
+        if (data.shopName !== undefined) adapted.shop_name = data.shopName;
+        if (data.contact !== undefined) adapted.contact = data.contact;
+        if (data.phone !== undefined) adapted.phone = data.phone;
+        if (data.industry !== undefined) adapted.industry = data.industry;
+        if (data.clientType !== undefined) adapted.client_type = data.clientType;
+        if (data.source !== undefined) adapted.source = data.source;
+        if (data.tier !== undefined) adapted.tier = data.tier;
+        if (data.stage !== undefined) adapted.stage = data.stage;
+        if (data.status !== undefined) adapted.status = data.status;
+        if (data.budgetRange !== undefined) adapted.budget_range = data.budgetRange;
+        if (data.dailyBudget !== undefined) adapted.daily_budget = data.dailyBudget;
+        if (data.currentConsumption !== undefined) adapted.current_consumption = data.currentConsumption;
+        if (data.assignedTo !== undefined) adapted.assigned_to = data.assignedTo;
+        if (data.remark !== undefined) adapted.remark = data.remark;
+        if (data.riskLevel !== undefined) adapted.risk_level = data.riskLevel;
+        if (data.lastContactAt !== undefined) adapted.last_contact_at = data.lastContactAt;
+        if (data.nextContactAt !== undefined) adapted.next_contact_at = data.nextContactAt;
+        await leadApi.updateLead(id, adapted);
+      } catch (e) { console.error("editLead API error:", e); }
     }
     set((state) => ({ leads: state.leads.map((l) => (l.id === id ? { ...l, ...data } : l)) }));
     if (data.assignedTo !== undefined) {

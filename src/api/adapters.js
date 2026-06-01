@@ -61,7 +61,7 @@ export function fromSnakeAdvertiser(r) {
     industry: r.industry || "", contact: r.contact || "", phone: r.phone || "",
     assignedTo: r.assigned_to || "", startDate: r.start_date || "",
     mainProduct: r.main_product || "", unitPrice: Number(r.unit_price || 0),
-    rebate: Number(r.rebate || 0), riskLevel: r.risk_level || "低", metrics: r.metrics || [],
+    rebate: Number(r.rebate || 0), riskLevel: r.risk_level || "低", status: r.status || "活跃投放", metrics: r.metrics || [],
   };
 }
 
@@ -71,6 +71,6 @@ export function toSnakeAdvertiser(a) {
     industry: a.industry, contact: a.contact, phone: a.phone,
     assigned_to: a.assignedTo, start_date: a.startDate,
     main_product: a.mainProduct, unit_price: a.unitPrice,
-    rebate: a.rebate, risk_level: a.riskLevel,
+    rebate: a.rebate, risk_level: a.riskLevel, status: a.status || "活跃投放",
   };
 }
