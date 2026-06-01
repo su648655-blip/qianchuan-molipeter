@@ -52,8 +52,8 @@ const useLeadStore = create((set, get) => ({
         if (data.stage !== undefined) adapted.stage = data.stage;
         if (data.status !== undefined) adapted.status = data.status;
         if (data.budgetRange !== undefined) adapted.budget_range = data.budgetRange;
-        if (data.dailyBudget !== undefined) adapted.daily_budget = data.dailyBudget;
-        if (data.currentConsumption !== undefined) adapted.current_consumption = data.currentConsumption;
+        if (data.dailyBudget !== undefined) adapted.daily_budget = data.dailyBudget === "" ? 0 : Number(data.dailyBudget);
+        if (data.currentConsumption !== undefined) adapted.current_consumption = data.currentConsumption === "" ? 0 : Number(data.currentConsumption);
         if (data.assignedTo !== undefined) adapted.assigned_to = data.assignedTo;
         if (data.remark !== undefined) adapted.remark = data.remark;
         if (data.riskLevel !== undefined) adapted.risk_level = data.riskLevel;

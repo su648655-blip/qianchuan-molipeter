@@ -55,8 +55,8 @@ const useAdvertiserStore = create((set, get) => ({
         if (data.assignedTo !== undefined) adapted.assigned_to = data.assignedTo;
         if (data.startDate !== undefined) adapted.start_date = data.startDate;
         if (data.mainProduct !== undefined) adapted.main_product = data.mainProduct;
-        if (data.unitPrice !== undefined) adapted.unit_price = data.unitPrice;
-        if (data.rebate !== undefined) adapted.rebate = data.rebate;
+        if (data.unitPrice !== undefined) adapted.unit_price = data.unitPrice === "" ? 0 : Number(data.unitPrice);
+        if (data.rebate !== undefined) adapted.rebate = data.rebate === "" ? 0 : Number(data.rebate);
         if (data.riskLevel !== undefined) adapted.risk_level = data.riskLevel;
         await adApi.updateAdvertiser(id, adapted);
       } catch (e) { console.error("editAdvertiser API error:", e); }
@@ -70,7 +70,7 @@ const useAdvertiserStore = create((set, get) => ({
         const leads = useLeadStore.getState().leads.map((l) =>
           l.id === leadId ? { ...l, status: data.status } : l
         );
-        leadStore.getState().setLeads(leads);
+        useLeadStore.getState().setLeads(leads);
       }
     }
     if (data.assignedTo !== undefined) {
