@@ -62,15 +62,22 @@ const useAdvertiserStore = create((set, get) => ({
       } catch (e) { console.error("editAdvertiser API error:", e); }
     }
     set((state) => ({ advertisers: state.advertisers.map((a) => (a.id === id ? { ...a, ...data } : a)) }));
-    // Sync status to linked lead
+    // Sync status to linked lead (local state + API)
     if (data.status !== undefined) {
       const currentAd = get().advertisers.find((a) => a.id === id);
       const leadId = data.leadId || currentAd?.leadId;
       if (leadId) {
+        // Update local state
         const leads = useLeadStore.getState().leads.map((l) =>
           l.id === leadId ? { ...l, status: data.status } : l
         );
         useLeadStore.getState().setLeads(leads);
+        // Update API
+        if (IS_SERVER) {
+          import("../api/leads").then(({ updateLead }) => {
+            updateLead(leadId, { status: data.status }).catch(e => console.error("sync status to lead error:", e));
+          });
+        }
       }
     }
     if (data.assignedTo !== undefined) {
