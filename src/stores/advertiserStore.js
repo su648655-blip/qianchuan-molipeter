@@ -3,6 +3,7 @@ import { generateId } from "../lib/utils";
 import { loadFromStorage, saveToStorage } from "../services/persistService";
 import * as adApi from "../api/advertisers";
 import * as metricApi from "../api/metrics";
+import { executeSync } from "../services/syncService";
 
 const IS_SERVER = true;
 
@@ -42,6 +43,13 @@ const useAdvertiserStore = create((set, get) => ({
       try { await adApi.updateAdvertiser(id, data); } catch (e) { console.error("editAdvertiser API error:", e); }
     }
     set((state) => ({ advertisers: state.advertisers.map((a) => (a.id === id ? { ...a, ...data } : a)) }));
+    if (data.assignedTo !== undefined) {
+      const currentAd = get().advertisers.find((a) => a.id === id);
+      const leadId = data.leadId || currentAd?.leadId;
+      if (leadId) {
+        executeSync("advertiser", id, "assignedTo", data.assignedTo, { leadId });
+      }
+    }
     return { ...data, id };
   },
 

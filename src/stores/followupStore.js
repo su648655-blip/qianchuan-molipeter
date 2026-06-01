@@ -26,11 +26,26 @@ const useFollowupStore = create((set) => ({
         await followupApi.createFollowup(newF);
         const leadUpdate = { last_contact_at: f.contactAt || newF.createdAt };
         if (f.nextContactAt) leadUpdate.next_contact_at = f.nextContactAt;
-        const { updateLead } = await import("../api/leads");
+        const { default: leadStoreStatic } = await import("../stores/leadStore");
+        const { updateLead } = await import("../api/leads").catch(() => ({}));
+        if (!updateLead) return newF;
         try { await updateLead(f.leadId, leadUpdate); } catch (e) { console.error("addFollowup lead sync error:", e); }
       } catch (e) { console.error("addFollowup API error:", e); }
     }
     set((state) => ({ followups: [newF, ...state.followups] }));
+    // Sync lead's lastContactAt / nextContactAt
+    const { default: leadStore } = await import("../stores/leadStore").catch(() => null);
+    if (!leadStore) return newF;
+    const leads = leadStore.getState().leads.map((l) =>
+      l.id === f.leadId
+        ? {
+            ...l,
+            lastContactAt: f.contactAt || newF.createdAt,
+            ...(f.nextContactAt ? { nextContactAt: f.nextContactAt } : {}),
+          }
+        : l
+    );
+    leadStore.getState().setLeads(leads);
     return newF;
   },
 }));

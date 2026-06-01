@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { generateId } from "../lib/utils";
 import { loadFromStorage, saveToStorage } from "../services/persistService";
 import * as leadApi from "../api/leads";
+import { executeSync } from "../services/syncService";
 
 const IS_SERVER = true;
 
@@ -38,6 +39,9 @@ const useLeadStore = create((set, get) => ({
       try { await leadApi.updateLead(id, data); } catch (e) { console.error("editLead API error:", e); }
     }
     set((state) => ({ leads: state.leads.map((l) => (l.id === id ? { ...l, ...data } : l)) }));
+    if (data.assignedTo !== undefined) {
+      executeSync("lead", id, "assignedTo", data.assignedTo);
+    }
     return { ...data, id };
   },
 
@@ -54,6 +58,7 @@ const useLeadStore = create((set, get) => ({
       try { await leadApi.updateLead(leadId, { assigned_to: salesName }); } catch (e) { console.error("assignLead API error:", e); }
     }
     set((state) => ({ leads: state.leads.map((l) => (l.id === leadId ? { ...l, assignedTo: salesName } : l)) }));
+    executeSync("lead", leadId, "assignedTo", salesName);
     return { leadId, assignedTo: salesName };
   },
 
