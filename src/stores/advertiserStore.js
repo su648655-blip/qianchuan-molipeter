@@ -3,6 +3,7 @@ import { generateId } from "../lib/utils";
 import { loadFromStorage, saveToStorage } from "../services/persistService";
 import * as adApi from "../api/advertisers";
 import * as metricApi from "../api/metrics";
+import { toSnakeAdvertiser } from "../api/adapters";
 import { executeSync } from "../services/syncService";
 
 const IS_SERVER = true;
@@ -33,7 +34,6 @@ const useAdvertiserStore = create((set, get) => ({
     const newA = { ...a, id: generateId(), metrics: a.metrics || [] };
     if (IS_SERVER) {
       try {
-        const { toSnakeAdvertiser } = await import("../api/adapters");
         await adApi.createAdvertiser(toSnakeAdvertiser(newA));
       } catch (e) { console.error("addAdvertiser API error:", e); }
     }

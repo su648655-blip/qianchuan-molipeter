@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { generateId } from "../lib/utils";
 import { loadFromStorage, saveToStorage } from "../services/persistService";
 import * as leadApi from "../api/leads";
+import { toSnakeLead } from "../api/adapters";
 import { executeSync } from "../services/syncService";
 
 const IS_SERVER = true;
@@ -29,7 +30,6 @@ const useLeadStore = create((set, get) => ({
     const newLead = { ...lead, id: generateId(), createdAt: new Date().toISOString() };
     if (IS_SERVER) {
       try {
-        const { toSnakeLead } = await import("../api/adapters");
         await leadApi.createLead(toSnakeLead(newLead));
       } catch (e) { console.error("addLead API error:", e); }
     }

@@ -1,8 +1,9 @@
 import { api } from "./client";
+import { fromSnakeLead } from "./adapters";
 
 export async function fetchLeads() {
   const res = await api("/api/leads");
-  return res.data || [];
+  return (res.data || []).map(fromSnakeLead);
 }
 
 export async function createLead(lead) {

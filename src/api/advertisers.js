@@ -1,8 +1,9 @@
 import { api } from "./client";
+import { fromSnakeAdvertiser } from "./adapters";
 
 export async function fetchAdvertisers() {
   const res = await api("/api/advertisers");
-  return res.data || [];
+  return (res.data || []).map(fromSnakeAdvertiser);
 }
 
 export async function createAdvertiser(ad) {

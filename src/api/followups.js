@@ -1,8 +1,9 @@
 import { api } from "./client";
+import { fromSnakeFollowup } from "./adapters";
 
 export async function fetchFollowups() {
   const res = await api("/api/followups");
-  return res.data || [];
+  return (res.data || []).map(fromSnakeFollowup);
 }
 
 export async function createFollowup(f) {

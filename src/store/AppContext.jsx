@@ -4,6 +4,7 @@ import useLeadStore from "../stores/leadStore";
 import useAdvertiserStore from "../stores/advertiserStore";
 import useFollowupStore from "../stores/followupStore";
 import useUserStore from "../stores/userStore";
+import { fromSnakeLead, fromSnakeAdvertiser } from "../api/adapters";
 import { generateSeedLeads, generateSeedAdvertisers } from "../data/seed";
 import { DEFAULT_USERS } from "../data/constants";
 
@@ -35,7 +36,7 @@ export function AppProvider({ children }) {
         if (!leadsData) {
           const saved = localStorage.getItem("qc_leads");
           if (saved) {
-            const { fromSnakeLead } = await import("../api/adapters");
+            
             leadStore.setLeads(JSON.parse(saved).map(fromSnakeLead));
           } else {
             const salesNames = DEFAULT_USERS.filter(u => u.role === "sales").map(u => u.name);
@@ -47,7 +48,7 @@ export function AppProvider({ children }) {
         if (!adsData) {
           const saved = localStorage.getItem("qc_advertisers");
           if (saved) {
-            const { fromSnakeAdvertiser } = await import("../api/adapters");
+            
             adStore.setAdvertisers(JSON.parse(saved).map(fromSnakeAdvertiser));
           } else {
             const savedLeads = JSON.parse(localStorage.getItem("qc_leads"));

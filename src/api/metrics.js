@@ -11,7 +11,17 @@ export async function fetchMetrics(advertiserId) {
 }
 
 export async function createMetric(metric) {
-  return api("/api/metrics", { method: "POST", body: JSON.stringify(metric) });
+  const adapted = {
+    id: metric.id,
+    advertiser_id: metric.advertiserId,
+    date: metric.date,
+    daily_consumption: metric.dailyConsumption,
+    cpm: metric.cpm,
+    ctr: metric.ctr,
+    cvr: metric.cvr,
+    roi: metric.roi,
+  };
+  return api("/api/metrics", { method: "POST", body: JSON.stringify(adapted) });
 }
 
 export async function deleteMetric(id) {
