@@ -25,12 +25,13 @@ export function AppProvider({ children }) {
     let cancelled = false;
     async function loadAll() {
       try {
-        const [usersData, leadsData, followupsData, adsData] = await Promise.all([
+        const [usersData, leadsData, followupsData] = await Promise.all([
           userStore.fetchUsers(),
           leadStore.fetchLeads(),
           followStore.fetchFollowups(),
-          adStore.fetchAdvertisers(),
         ]);
+        // Load advertisers after leads so status can be synced from linked leads
+        const adsData = await adStore.fetchAdvertisers();
         if (cancelled) return;
         // If API returned null (error), fall back to localStorage
         if (!leadsData) {

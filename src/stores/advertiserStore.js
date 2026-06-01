@@ -25,6 +25,9 @@ const useAdvertiserStore = create((set, get) => ({
       const advertisers = await adApi.fetchAdvertisers();
       for (const a of advertisers) {
         try { a.metrics = await metricApi.fetchMetrics(a.id); } catch { a.metrics = []; }
+        // Fill status from linked lead
+        const lead = useLeadStore.getState().leads.find(l => l.id === a.leadId);
+        if (lead && lead.status) a.status = lead.status;
       }
       set({ advertisers, loading: false });
       return advertisers;
