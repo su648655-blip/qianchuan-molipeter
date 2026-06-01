@@ -4,6 +4,7 @@ import { loadFromStorage, saveToStorage } from "../services/persistService";
 import * as adApi from "../api/advertisers";
 import * as metricApi from "../api/metrics";
 import { toSnakeAdvertiser } from "../api/adapters";
+import useLeadStore from "../stores/leadStore";
 import { executeSync } from "../services/syncService";
 
 const IS_SERVER = true;
@@ -57,11 +58,21 @@ const useAdvertiserStore = create((set, get) => ({
         if (data.unitPrice !== undefined) adapted.unit_price = data.unitPrice;
         if (data.rebate !== undefined) adapted.rebate = data.rebate;
         if (data.riskLevel !== undefined) adapted.risk_level = data.riskLevel;
-        if (data.status !== undefined) adapted.status = data.status;
         await adApi.updateAdvertiser(id, adapted);
       } catch (e) { console.error("editAdvertiser API error:", e); }
     }
     set((state) => ({ advertisers: state.advertisers.map((a) => (a.id === id ? { ...a, ...data } : a)) }));
+    // Sync status to linked lead
+    if (data.status !== undefined) {
+      const currentAd = get().advertisers.find((a) => a.id === id);
+      const leadId = data.leadId || currentAd?.leadId;
+      if (leadId) {
+        const leads = useLeadStore.getState().leads.map((l) =>
+          l.id === leadId ? { ...l, status: data.status } : l
+        );
+        leadStore.getState().setLeads(leads);
+      }
+    }
     if (data.assignedTo !== undefined) {
       const currentAd = get().advertisers.find((a) => a.id === id);
       const leadId = data.leadId || currentAd?.leadId;
